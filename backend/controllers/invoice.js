@@ -122,7 +122,7 @@ exports.deleteInvoice = async (req, res) => {
   try {
     const { id } = req.params;
     await invoiceService.deleteInvoice(id);
-    res.status(204);
+    res.status(204).send();
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error', error: err.message });
