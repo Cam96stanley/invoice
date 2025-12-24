@@ -4,7 +4,10 @@ const protect = require('../middleware/auth');
 const authController = require('../controllers/invoice');
 
 router.post('/', protect, authController.createInvoice);
-router.route('/:id').patch(protect, authController.updateInvoice).get(protect);
 router.get('/myInvoices', protect);
+router
+  .route('/:id')
+  .patch(protect, authController.updateInvoice)
+  .delete(protect, authController.deleteInvoice);
 
 module.exports = router;
