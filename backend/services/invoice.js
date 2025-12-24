@@ -101,7 +101,9 @@ exports.updateInvoice = async (invoiceId, updateData) => {
 
 exports.getInvoice = async (id) => {
   try {
-    const invoice = await Invoice.findByPk({ where: { id } });
+    const invoice = await Invoice.findByPk(id, {
+      include: [{ model: Item, as: 'items' }],
+    });
     if (!invoice) {
       throw new Error('Invoice not found');
     }
@@ -112,7 +114,7 @@ exports.getInvoice = async (id) => {
   }
 };
 
-exports.getMyInvoices = async (req, res) => {
+exports.getMyInvoices = async (userId) => {
   try {
     const invoices = await Invoice.findAll({
       where: { userId },
