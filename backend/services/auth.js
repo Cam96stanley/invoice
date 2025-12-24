@@ -88,6 +88,18 @@ exports.login = async ({ email, password }) => {
   }
 };
 
+exports.refresh = async ({ refreshToken }) => {
+  const command = new InitiateAuthCommand({
+    AuthFlow: 'REFRESH_TOKEN_AUTH',
+    ClientId: process.env.AWS_CLIENT_ID,
+    AuthParameters: {
+      REFRESH_TOKEN: refreshToken,
+    },
+  });
+
+  return await cognito.send(command);
+};
+
 exports.logout = async ({ refreshToken }) => {
   try {
     const command = new RevokeTokenCommand({
