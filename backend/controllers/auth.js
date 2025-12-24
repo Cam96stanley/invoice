@@ -39,3 +39,19 @@ exports.login = async (req, res) => {
     res.status(401).json({ error: err.message });
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ message: 'You are not logged in' });
+    }
+
+    const result = await authService.logout({ refreshToken });
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ message: 'Error logging out', error: err });
+  }
+};

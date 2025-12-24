@@ -1,11 +1,10 @@
 require('dotenv').config();
 const {
   SignUpCommand,
-  ConfirmSignUp$,
   ConfirmSignUpCommand,
   AdminGetUserCommand,
-  InitiateAuth$,
   InitiateAuthCommand,
+  RevokeTokenCommand,
 } = require('@aws-sdk/client-cognito-identity-provider');
 const cognitoClient = require('../config/cognito');
 const { User } = require('../models/Associations');
@@ -85,6 +84,22 @@ exports.login = async ({ email, password }) => {
     };
   } catch (err) {
     console.error('Error logging in:', err);
+    throw err;
+  }
+};
+
+exports.logout = async ({ refreshToken }) => {
+  try {
+    const command = new RevokeTokenCommand({
+      ClientId: process.env.AWS_CLIENT_ID,
+      Token: refreshToken,
+    });
+
+    await cognito.send(command);
+
+    return { message: 'Logged out successfully' };
+  } catch (err) {
+    console.error('Error logging out:', err);
     throw err;
   }
 };
