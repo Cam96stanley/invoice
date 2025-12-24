@@ -39,10 +39,11 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 1.5em;
+  gap: 1.25em;
   padding-right: 1em;
 }
 
 .login-logout-text {
   color: #ffff;
+  text-decoration: none;
 }

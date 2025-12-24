@@ -1,9 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import "./layout.css";
 import logo from "../assets/logo.svg";
 import moon from "../assets/icon-moon.svg";
 
 export default function Layout() {
+  const location = useLocation();
+
+  const isSignupPage = location.pathname === "/signup";
+  const linkText = isSignupPage ? "Login" : "Signup";
+  const linkTo = isSignupPage ? "/" : "/signup";
   return (
     <>
       <div className="nav">
@@ -13,7 +18,9 @@ export default function Layout() {
         <div className="nav-actions">
           <img src={moon} alt="moon icon" />
 
-          <p className="login-logout-text">Login</p>
+          <Link to={linkTo} className="login-logout-text">
+            {linkText}
+          </Link>
         </div>
       </div>
 
