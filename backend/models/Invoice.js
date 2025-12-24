@@ -95,4 +95,14 @@ const Invoice = sequelize.define(
   }
 );
 
+Invoice.beforeSave(async (invoice, options) => {
+  if (invoice.items && invoice.items.length > 0) {
+    const total = invoice.items.reduce(
+      (sum, item) => sum + Number(item.price) * Number(item.quantity),
+      0
+    );
+    invoice.total = total;
+  }
+});
+
 module.exports = Invoice;
