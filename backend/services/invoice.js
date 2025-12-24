@@ -98,3 +98,16 @@ exports.updateInvoice = async (invoiceId, updateData) => {
     throw err;
   }
 };
+
+exports.deleteInvoice = async (id) => {
+  try {
+    const deleted = await Invoice.destroy({ where: { id } });
+    if (!deleted) {
+      throw new Error('Invoice not found');
+    }
+    return deleted;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};

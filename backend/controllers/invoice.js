@@ -92,3 +92,14 @@ exports.updateInvoice = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 };
+
+exports.deleteInvoice = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await invoiceService.deleteInvoice(id);
+    res.status(204);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
