@@ -15,7 +15,10 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.956.0",
+    "axios": "^1.13.2",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "jwk-to-pem": "^2.0.7",
     "mysql2": "^3.16.0",
     "sequelize": "^6.37.7"
   }

@@ -48,12 +48,20 @@ exports.confirmSignup = async ({ email, code }) => {
       new AdminGetUserCommand(getUserParams)
     );
 
+    const subAttr = userData.UserAttributes.find((attr) => attr.Name === 'sub');
+
+    const sub = subAttr?.Value;
+
     const nameAttr = userData.UserAttributes.find(
       (attr) => attr.Name === 'name'
     );
     const name = nameAttr ? nameAttr.Value : email.split('@')[0];
 
-    const newUser = await User.create({ email, name });
+    if (!sub) {
+      throw new Error('Could not retrieve Cognito user ID (sub)');
+    }
+
+    const newUser = await User.create({ id: sub, email, name });
 
     return newUser;
   } catch (err) {
@@ -97,7 +105,7 @@ exports.refresh = async ({ refreshToken }) => {
     },
   });
 
-  return await cognito.send(command);
+  return await cognitoClient.send(command);
 };
 
 exports.logout = async ({ refreshToken }) => {
@@ -107,7 +115,7 @@ exports.logout = async ({ refreshToken }) => {
       Token: refreshToken,
     });
 
-    await cognito.send(command);
+    await cognitoClient.send(command);
 
     return { message: 'Logged out successfully' };
   } catch (err) {
