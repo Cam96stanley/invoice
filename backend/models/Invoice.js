@@ -11,7 +11,7 @@ const Invoice = sequelize.define(
       primaryKey: true,
     },
     userId: {
-      type: DataTypes.UUID,
+      type: DataTypes.CHAR(36),
       allowNull: false,
       references: {
         model: User,
