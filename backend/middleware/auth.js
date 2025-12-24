@@ -13,7 +13,7 @@ const getPems = async () => {
   const { data } = await axios.get(url);
 
   const pems = {};
-  data.keys.array.forEach((key) => {
+  data.keys.forEach((key) => {
     pems[key.kid] = jwkToPem(key);
   });
 
