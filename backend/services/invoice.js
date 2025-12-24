@@ -99,6 +99,33 @@ exports.updateInvoice = async (invoiceId, updateData) => {
   }
 };
 
+exports.getInvoice = async (id) => {
+  try {
+    const invoice = await Invoice.findByPk({ where: { id } });
+    if (!invoice) {
+      throw new Error('Invoice not found');
+    }
+    return invoice;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
+exports.getMyInvoices = async (req, res) => {
+  try {
+    const invoices = await Invoice.findAll({
+      where: { userId },
+      include: [{ model: Item, as: 'items' }],
+      order: [['createdAt', 'DESC']],
+    });
+    return invoices;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 exports.deleteInvoice = async (id) => {
   try {
     const deleted = await Invoice.destroy({ where: { id } });

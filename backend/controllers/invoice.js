@@ -93,9 +93,34 @@ exports.updateInvoice = async (req, res) => {
   }
 };
 
-exports.deleteInvoice = async (req, res) => {
-  const { id } = req.params;
+exports.getInvoice = async (req, res) => {
   try {
+    const { id } = req.params;
+    const invoice = await invoiceService.getInvoice(id);
+    res.status(200).json({ data: invoice });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+exports.getMyInvoices = async (req, res) => {
+  try {
+    const userId = req.user.sub;
+    const invoices = await invoiceService.getMyInvoices(userId);
+
+    res.status(200).json({ data: invoices });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: 'Failed to fetch invoices', error: err.message });
+  }
+};
+
+exports.deleteInvoice = async (req, res) => {
+  try {
+    const { id } = req.params;
     await invoiceService.deleteInvoice(id);
     res.status(204);
   } catch (err) {
