@@ -16,6 +16,7 @@
 }
 
 body {
+  background: var(--background-light);
   font-family: "League Spartan", sans-serif;
   padding: 0px;
   margin: 0px;
