@@ -1,7 +1,7 @@
 import type React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./loginPage.css";
+import "./formPages.css";
 import { useState } from "react";
 
 export default function LoginPage() {

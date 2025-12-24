@@ -4,7 +4,7 @@ import axios from "axios";
 import "./formPages.css";
 import { useState } from "react";
 
-export default function SignupPage() {
+export default function ConfirmSignupPage() {
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
@@ -17,10 +17,14 @@ export default function SignupPage() {
       data[key] = value.toString();
     });
 
-    try {
-      await axios.post("http://localhost:5000/auth/signup", data);
+    const payload = {
+      email: data.email,
+      code: data.confirmSignup,
+    };
 
-      navigate("/confirmSignup");
+    try {
+      await axios.post("http://localhost:5000/auth/confirm", payload);
+      navigate("/");
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         console.log(err);
@@ -38,36 +42,26 @@ export default function SignupPage() {
         <h1>Sign up</h1>
         <form id="login-form" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Name"
-              required
-            />
-          </div>
-          <div>
             <label htmlFor="email">Email:</label>
             <input
-              id="email"
               type="email"
+              id="email"
               name="email"
               placeholder="Email"
               required
             />
           </div>
           <div>
-            <label htmlFor="password">Password:</label>
+            <label htmlFor="confirmSignup">Confirmation Code:</label>
             <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
+              type="text"
+              id="confirmSignup"
+              name="confirmSignup"
+              placeholder="123456"
               required
             />
           </div>
-          <button type="submit">Sign up!</button>
+          <button type="submit">Submit</button>
         </form>
         {error ? (
           <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
