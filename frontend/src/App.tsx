@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import DashboardPage from "./pages/DashboardPage";
 import ConfirmSignupPage from "./pages/ConfirmSignupPage";
+import InvoicePage from "./pages/InvoicePage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/confirmSignup" element={<ConfirmSignupPage />} />
+        <Route path="/invoices/:id" element={<InvoicePage />} />
       </Route>
     </Routes>
   );

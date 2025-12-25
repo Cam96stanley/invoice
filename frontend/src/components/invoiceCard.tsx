@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./invoiceCard.css";
 
 interface Item {
@@ -35,6 +37,30 @@ interface InvoiceProps {
 }
 
 export default function InvoiceCard({ invoices }: InvoiceProps) {
+  const navigate = useNavigate();
+
+  const handleCardClick = async (invoiceId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get(
+        `http://localhost:5000/invoices/${invoiceId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log(res.data.data);
+      navigate(`/invoices/${invoiceId}`, { state: { invoice: res.data.data } });
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        console.error(err.response?.data?.error);
+      } else if (err instanceof Error) {
+        console.error("Unexpected error:", err.message);
+      }
+      console.error("Unknown error:", err);
+    }
+  };
+
   return (
     <div className="invoice-container">
       {invoices.map((invoice) => {
@@ -46,7 +72,12 @@ export default function InvoiceCard({ invoices }: InvoiceProps) {
         })}`;
 
         return (
-          <div key={invoice.id} className="invoice-card">
+          <div
+            key={invoice.id}
+            className="invoice-card"
+            onClick={() => handleCardClick(invoice.id)}
+            style={{ cursor: "pointer" }}
+          >
             <div className="left-card">
               <p className="invoice-number">{invoice.displayInvoiceNumber}</p>
               <p className="due-date">{formattedDueDate}</p>
